@@ -14,11 +14,13 @@ import {
   useDisclosure,
   useToast
 } from '@chakra-ui/react';
+import { mutate } from 'swr';
 
 import { createSite } from '@/lib/firestore';
+import { fetcher } from '@/util/fetcher';
 import { useAuth } from '@/lib/auth';
 
-function AddSiteModal() {
+function AddSiteModal({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const { register, handleSubmit } = useForm();
@@ -26,12 +28,14 @@ function AddSiteModal() {
 
   const onCreateSite = async ({ name, url }) => {
     try {
-      await createSite({
+      const newSite = {
         author: auth.user.uid,
         createdAt: new Date().toISOString(),
         name,
         url
-      });
+      };
+
+      const id = await createSite(newSite);
       toast({
         position: 'top',
         title: 'Site Created',
@@ -40,6 +44,13 @@ function AddSiteModal() {
         duration: 4500,
         isClosable: true
       });
+      mutate(
+        '/api/sites',
+        async (data) => ({
+          sites: [{ id, ...newSite }, ...data.sites]
+        }),
+        false
+      );
       onClose();
     } catch (error) {
       console.error(`Error creating the Site: ${error}`);
@@ -48,8 +59,15 @@ function AddSiteModal() {
 
   return (
     <>
-      <Button onClick={onOpen} fontWeight="medium">
-        Add your first site
+      <Button
+        backgroundColor="gray.900"
+        color="white"
+        fontWeight="medium"
+        _hover={{ bg: 'gray.700' }}
+        _active={{ transform: 'scale(0.95)', bg: 'gray.800' }}
+        onClick={onOpen}
+      >
+        {children}
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>

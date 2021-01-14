@@ -1,9 +1,20 @@
 import React from 'react';
 import NextLink from 'next/link';
-import { Box, Flex, Link, Avatar, Icon } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Link,
+  Avatar,
+  Heading,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  Button
+} from '@chakra-ui/react';
 
 import { useAuth } from '@/lib/auth';
 import LogoIcon from './LogoIcon';
+import AddSiteModal from './AddSiteModal';
 
 const DashboardShell = ({ children }) => {
   const { user } = useAuth();
@@ -52,6 +63,15 @@ const DashboardShell = ({ children }) => {
         </Flex>
       </Flex>
       <Flex margin="0 auto" direction="column" maxW="1250px" px={[0, 8, 8]}>
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <BreadcrumbLink>Sites</BreadcrumbLink>
+          </BreadcrumbItem>
+        </Breadcrumb>
+        <Flex justifyContent="space-between">
+          <Heading mb={8}>My Sites</Heading>
+          <AddSiteModal>+ Add Site</AddSiteModal>
+        </Flex>
         {children}
       </Flex>
     </Box>
