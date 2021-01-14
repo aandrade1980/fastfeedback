@@ -13,11 +13,11 @@ import {
 } from '@chakra-ui/react';
 
 import { useAuth } from '@/lib/auth';
-import LogoIcon from './LogoIcon';
 import AddSiteModal from './AddSiteModal';
+import LogoIcon from './LogoIcon';
 
 const DashboardShell = ({ children }) => {
-  const { user } = useAuth();
+  const auth = useAuth();
 
   return (
     <Box backgroundColor="gray.100" h="100vh">
@@ -54,9 +54,17 @@ const DashboardShell = ({ children }) => {
             </NextLink>
           </Flex>
           <Flex justifyContent="center" alignItems="center">
+            <Link
+              mr={5}
+              fontSize="sm"
+              color="gray.600"
+              onClick={() => auth.signout()}
+            >
+              Log Out
+            </Link>
             <NextLink href="/account" passHref>
               <Link>
-                <Avatar size="sm" src={user?.photoUrl} />
+                <Avatar size="sm" src={auth.user?.photoUrl} />
               </Link>
             </NextLink>
           </Flex>

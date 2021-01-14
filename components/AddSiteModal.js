@@ -17,7 +17,6 @@ import {
 import { mutate } from 'swr';
 
 import { createSite } from '@/lib/firestore';
-import { fetcher } from '@/util/fetcher';
 import { useAuth } from '@/lib/auth';
 
 function AddSiteModal({ children }) {
