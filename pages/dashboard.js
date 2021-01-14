@@ -1,13 +1,25 @@
-import Head from 'next/head';
+import useSWR from 'swr';
+
+import { fetcher } from '@/util/fetcher';
 import { useAuth } from '@/lib/auth';
+import DashboardShell from '@/components/DashboardShell';
 import EmptyState from '@/components/EmptyState';
+import SiteTable from '@/components/SiteTable';
+import SiteTableSkeleton from '@/components/SiteTableSkeleton';
 
 export default function Dashboard() {
   const auth = useAuth();
+  const { data } = useSWR('/api/sites', fetcher);
 
-  if (!auth.user) {
-    return 'Loading...';
-  }
-
-  return <EmptyState />;
+  return (
+    <DashboardShell>
+      {!data ? (
+        <SiteTableSkeleton />
+      ) : data.sites ? (
+        <SiteTable sites={data.sites} />
+      ) : (
+        <EmptyState />
+      )}
+    </DashboardShell>
+  );
 }
