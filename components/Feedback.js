@@ -11,7 +11,7 @@ const Feedback = ({ author, text, createdAt }) => (
     <Text color="gray.500" mb={4} fontSize="xs">
       {formatDate(createdAt, 'PPpp')}
     </Text>
-    <text color="gray.800">{text}</text>
+    <Text color="gray.800">{text}</Text>
     <Divider borderColor="gray.200" backgroundColor="gray.200" mt={8} mb={8} />
   </Box>
 );
