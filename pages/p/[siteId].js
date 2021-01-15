@@ -14,7 +14,8 @@ export async function getStaticProps(context) {
   return {
     props: {
       initialFeedback
-    } // will be passed to the page component as props
+    }, // will be passed to the page component as props
+    revalidate: 60
   };
 }
 

@@ -11,6 +11,15 @@ export default function Home() {
   return (
     <div>
       <Head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+          if (document.cookie && document.cookie.includes('fast-feedback-auth')) {
+            window.location.href = "/dashboard"
+          }
+        `
+          }}
+        />
         <title>Fast Feedback</title>
       </Head>
 
@@ -24,7 +33,9 @@ export default function Home() {
         <LogoIcon />
 
         {auth.user ? (
-          <EmptyState />
+          <Button as="a" size="sm" fontWeight="medium" href="/dashboard" mt={4}>
+            View Dashboard
+          </Button>
         ) : (
           <Button mt={4} size="sm" onClick={() => auth.signinWithGitHub()}>
             Sign In
