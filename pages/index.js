@@ -1,10 +1,26 @@
 import Head from 'next/head';
-import { Button, Flex, HStack } from '@chakra-ui/react';
+import { Box, Button, Flex, HStack } from '@chakra-ui/react';
 
 import { useAuth } from '@/lib/auth';
 import { GitHubIcon, GoogleIcon, LogoIcon } from '@/components/Icons';
+import { getAllFeedback } from '@/lib/firestore-admin';
+import FeedbackLink from '@/components/FeedbackLink';
+import Feedback from '@/components/Feedback';
 
-export default function Home() {
+const SITE_ID = 'K03D5hn0VLexQsYLjJGK';
+
+export async function getStaticProps() {
+  const { feedback: initialFeedback = [] } = await getAllFeedback(SITE_ID);
+
+  return {
+    props: {
+      initialFeedback
+    }, // will be passed to the page component as props
+    revalidate: 60
+  };
+}
+
+export default function Home({ initialFeedback }) {
   const auth = useAuth();
 
   return (
@@ -26,8 +42,9 @@ export default function Home() {
         as="main"
         direction="column"
         align="center"
-        h="100vh"
         justify="center"
+        bg="gray.100"
+        py={16}
       >
         <LogoIcon />
 
@@ -74,6 +91,20 @@ export default function Home() {
           </HStack>
         )}
       </Flex>
+      <Box
+        display="flex"
+        flexDirection="column"
+        width="full"
+        maxWidth="700px"
+        margin="0 auto"
+        mt={8}
+        px={4}
+      >
+        <FeedbackLink siteId={SITE_ID} />
+        {initialFeedback.map((feedback) => (
+          <Feedback key={feedback.id} {...feedback} />
+        ))}
+      </Box>
     </div>
   );
 }

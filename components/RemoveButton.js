@@ -41,6 +41,7 @@ export default function RemoveButton({ idToRemove }) {
         aria-label="Delete feedback"
         icon={<DeleteIcon />}
         onClick={() => setIsOpen(true)}
+        colorScheme="red"
       />
 
       <AlertDialog
