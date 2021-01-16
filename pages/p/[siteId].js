@@ -28,7 +28,7 @@ export async function getStaticPaths() {
   }));
   return {
     paths,
-    fallback: false
+    fallback: true
   };
 }
 
@@ -83,13 +83,18 @@ const SiteFeedback = ({ initialFeedback }) => {
             type="submit"
             isLoading={isLoading}
             loadingText="Submiting"
+            backgroundColor="gray.200"
+            _hover={{ bg: 'gray.400' }}
+            _active={{ transform: 'scale(0.95)' }}
+            disabled={router.isFallback}
           >
             Add Comment
           </Button>
         </FormControl>
-        {allFeedback.map((_feedback) => (
-          <Feedback key={_feedback.id} {..._feedback} />
-        ))}
+        {allFeedback &&
+          allFeedback.map((_feedback) => (
+            <Feedback key={_feedback.id} {..._feedback} />
+          ))}
       </Box>
     </Box>
   );
