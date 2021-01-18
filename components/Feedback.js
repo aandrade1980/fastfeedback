@@ -8,8 +8,9 @@ const Feedback = ({ author, text, createdAt }) => (
     <Heading size="sm" as="h3" mb={0} color="gray.900" fontWeight="medium">
       {author}
     </Heading>
+    createdAt: {createdAt}
     <Text color="gray.500" mb={4} fontSize="xs">
-      {formatDate(createdAt, 'PPpp')}
+      {/* {formatDate(createdAt, 'PPpp')} */}
     </Text>
     <Text color="gray.800">{text}</Text>
     <Divider borderColor="gray.200" backgroundColor="gray.200" mt={8} mb={8} />

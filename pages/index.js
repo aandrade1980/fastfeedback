@@ -35,7 +35,6 @@ export default function Home({ initialFeedback }) {
         `
           }}
         />
-        <title>Fast Feedback</title>
       </Head>
 
       <Flex

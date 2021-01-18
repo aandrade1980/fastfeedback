@@ -5,6 +5,7 @@ import { Box, Button, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { createFeedback } from '@/lib/firestore';
 import { getAllFeedback, getAllSites } from '@/lib/firestore-admin';
 import { useAuth } from '@/lib/auth';
+import DashboardShell from '@/components/DashboardShell';
 import Feedback from '@/components/Feedback';
 
 export async function getStaticProps(context) {
@@ -23,9 +24,10 @@ export async function getStaticPaths() {
   const { sites } = await getAllSites();
   const paths = sites.map(({ id }) => ({
     params: {
-      siteId: id.toString()
+      siteId: [id.toString()]
     }
   }));
+
   return {
     paths,
     fallback: true
@@ -33,6 +35,7 @@ export async function getStaticPaths() {
 }
 
 const SiteFeedback = ({ initialFeedback }) => {
+  console.log('SiteFeedback');
   const router = useRouter();
   const { siteId } = router.query;
   const { user } = useAuth();
@@ -67,36 +70,43 @@ const SiteFeedback = ({ initialFeedback }) => {
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      width="full"
-      maxWidth="700px"
-      margin="0 auto"
-    >
-      <Box as="form" onSubmit={onSubmit}>
-        <FormControl id="comment" my={6}>
-          <FormLabel>Comment</FormLabel>
-          <Input type="text" ref={inputEl} />
-          <Button
-            mt={2}
-            type="submit"
-            isLoading={isLoading}
-            loadingText="Submiting"
-            backgroundColor="gray.200"
-            _hover={{ bg: 'gray.400' }}
-            _active={{ transform: 'scale(0.95)' }}
-            disabled={router.isFallback}
-          >
-            Add Comment
-          </Button>
-        </FormControl>
-        {allFeedback &&
-          allFeedback.map((_feedback) => (
-            <Feedback key={_feedback.id} {..._feedback} />
-          ))}
+    <DashboardShell>
+      <Box
+        display="flex"
+        flexDirection="column"
+        width="full"
+        maxWidth="700px"
+        margin="0 auto"
+      >
+        <Box as="form" onSubmit={onSubmit}>
+          <FormControl id="comment" my={6}>
+            <FormLabel>Comment</FormLabel>
+            <Input
+              type="text"
+              ref={inputEl}
+              placeholder="Leave a comment"
+              bg="white"
+            />
+            <Button
+              mt={4}
+              type="submit"
+              isLoading={isLoading}
+              loadingText="Submiting"
+              backgroundColor="gray.200"
+              _hover={{ bg: 'gray.400' }}
+              _active={{ transform: 'scale(0.95)' }}
+              disabled={router.isFallback}
+            >
+              Add Comment
+            </Button>
+          </FormControl>
+          {allFeedback &&
+            allFeedback.map((_feedback) => (
+              <Feedback key={_feedback.id} {..._feedback} />
+            ))}
+        </Box>
       </Box>
-    </Box>
+    </DashboardShell>
   );
 };
 
