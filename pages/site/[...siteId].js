@@ -35,7 +35,6 @@ export async function getStaticPaths() {
 }
 
 const SiteFeedback = ({ initialFeedback }) => {
-  console.log('SiteFeedback');
   const router = useRouter();
   const { siteId } = router.query;
   const { user } = useAuth();
